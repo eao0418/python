@@ -48,10 +48,14 @@ class HeaderChecker(ApiHandler):
                                               body=body,
                                               headers=headers)
         except Exception as e:
-            print("Error: could not perform the request to {}, {}".format(host, e))
+            print("ERROR: could not perform the request to {}, {}".format(host, e))
             output.extend([host, "", "", "", "", "{}".format(e)])
 
         if None != response:
+
+            strict_transport_header = None
+            content_security_header = None
+            x_frame_header = None
 
             if not is_insecure:
                 strict_transport_header = response.getheader(
@@ -73,6 +77,8 @@ class HeaderChecker(ApiHandler):
 
                 if None != strict_transport_header and strict_transport_header:
                     output.append(strict_transport_header)
+                elif is_insecure:
+                    output.append("")
                 else:
                     output.append("MISSING")
                 if None != content_security_header and content_security_header:
@@ -85,11 +91,11 @@ class HeaderChecker(ApiHandler):
                     output.append("MISSING")
 
                 if is_insecure:
-                    output.append("Non-secure protocol used, Strict-Transport-Security")
+                    output.append("Non-secure protocol used, Strict-Transport-Security not evaluated")
                 else:
                     output.append("")
             except Exception as e:
-                print("Error: caught an exception {}".format(e))
+                print("ERROR: caught an exception {}".format(e))
 
             response.close()
         return output

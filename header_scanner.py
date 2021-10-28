@@ -16,7 +16,7 @@ def main():
     write_to_file_help = "tells the script to write output to a file rather "
     write_to_file_help = "than the console. Valid values for true are y, t, yes, "
     write_to_file_help = "true. Everything else is considered false"
-    
+
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--url",
@@ -61,13 +61,14 @@ def main():
 
     if urls != []:
 
+        print("INFO: Starting evaluation of URLs \n")
+        
         file_header = ["Host Scanned", "IP Address", "Strict-Transport-Security",
                        "Content-Security-Policy", "X-Frame-Options", "Notes"]
 
         # in my past experience, if you use all cpus, you lose results
         usable_cpu = multiprocessing.cpu_count() - 1
 
-        print(urls)
         if len(urls) == 1:
             scan_result.append(check_headers(urls[0]))
         else:
@@ -76,10 +77,10 @@ def main():
                     scan_result = pool.map(check_headers, urls)
                 except Exception as e:
                     print(
-                        "Error: caught an exception while running the header check {}".format(e))
+                        "ERROR: caught an exception while running the header check {}".format(e))
 
     else:
-        print("Error: no results were available to scan.")
+        print("ERROR: no results were available to scan.")
         exit(1)
 
     if len(scan_result) > 0:
@@ -89,7 +90,7 @@ def main():
         else:
             print_formatted_results(scan_result, file_header)
     else:
-        print("Error: No results were obtained from the assessment.")
+        print("ERROR: No results were obtained from the assessment.")
         exit(1)
 
 
@@ -110,6 +111,7 @@ def write_results_to_file(rows: list, header: list):
 
 def print_formatted_results(rows: list, headers: list) -> None:
 
+    print("\nScan Results: \n")
     for row in rows:
         print("{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}".format(
             headers[0], row[0],
@@ -118,7 +120,7 @@ def print_formatted_results(rows: list, headers: list) -> None:
             headers[3], row[3],
             headers[4], row[4],
             headers[5], row[5],
-            "----------------"))
+            "\n"))
 
 
 def check_headers(url: str) -> list:

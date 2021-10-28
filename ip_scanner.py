@@ -66,7 +66,7 @@ def main():
             try:
                 ip_objects = list(ipaddress.ip_network(ip))
             except ValueError as ve:
-                print("Error: the provided value is not valid CIDR notation: {}".format(ip))
+                print("ERROR: the provided value is not valid CIDR notation: {}".format(ip))
             
             for object in ip_objects:
                 if not object.is_private:
@@ -76,7 +76,7 @@ def main():
             try:
                 ip_object = ipaddress.ip_address(ip)
             except ValueError as ve:
-                print("Error: the provided value is not a valid IP address: {}".format(ip))
+                print("ERROR: the provided value is not a valid IP address: {}".format(ip))
                 exit(1)
 
             if None != ip_object and not ip_object.is_private:
@@ -95,7 +95,7 @@ def main():
                     try:
                         ip_objects = list(ipaddress.ip_network(line))
                     except ValueError as ve:
-                        print("Error: the provided value is not valid CIDR notation: {}".format(line))
+                        print("ERROR: the provided value is not valid CIDR notation: {}".format(line))
                     
                     for object in ip_objects:
                         if not object.is_private:
@@ -105,7 +105,7 @@ def main():
                     try:
                         ip_object = ipaddress.ip_address(line)
                     except ValueError as ve:
-                        print("Error: the provided value is not a valid IP address: {}".format(line))
+                        print("ERROR: the provided value is not a valid IP address: {}".format(line))
                     
                     if None != ip_object and not ip_object.is_private:
                         ips.append(format(ip_object))
