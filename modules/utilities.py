@@ -36,7 +36,7 @@ class HeaderChecker(ApiHandler):
 
         if (re.match(r"http://", url)):
             is_insecure = True
-        
+
         response = None
         output = []
         host = re.sub("(?i).com[a-z0-9/\-_?=&.]+", ".com",
@@ -49,20 +49,23 @@ class HeaderChecker(ApiHandler):
                                               headers=headers)
         except Exception as e:
             print("ERROR: could not perform the request to {}, {}".format(host, e))
-            output.extend([host, "", "", "", "", "{}".format(e)])
+            output.extend([host, "", "", "", "", "", "{}".format(e)])
 
         if None != response:
 
             strict_transport_header = None
             content_security_header = None
             x_frame_header = None
+            server_header = None
 
             if not is_insecure:
                 strict_transport_header = response.getheader(
                     "Strict-Transport-Security")
+
             content_security_header = response.getheader(
                 "Content-Security-Policy")
             x_frame_header = response.getheader("X-Frame-Options")
+            server_header = response.getheader("Server")
 
             try:
                 # check to see if the host is an IP address or hostname
@@ -89,19 +92,25 @@ class HeaderChecker(ApiHandler):
                     headers_present += 1
                 else:
                     output.append("MISSING")
-                
+
                 if None != x_frame_header and x_frame_header:
                     output.append(x_frame_header)
                     headers_present += 1
                 else:
                     output.append("MISSING")
 
-                if is_insecure:
-                    output.append("Non-secure protocol used, Strict-Transport-Security not evaluated")
+                if None != server_header and server_header:
+                    output.append(server_header)
                 else:
                     output.append("")
 
-                if headers_present == 3:
+                if is_insecure:
+                    output.append(
+                        "Non-secure protocol used, Strict-Transport-Security not evaluated")
+                else:
+                    output.append("")
+
+                if headers_present == 3 and (server_header == None and not server_header):
                     output = []
 
             except Exception as e:

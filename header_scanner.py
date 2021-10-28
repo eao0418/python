@@ -62,9 +62,9 @@ def main():
     if urls != []:
 
         print("INFO: Starting evaluation of URLs \n")
-        
+
         file_header = ["Host Scanned", "IP Address", "Strict-Transport-Security",
-                       "Content-Security-Policy", "X-Frame-Options", "Notes"]
+                       "Content-Security-Policy", "X-Frame-Options", "Server", "Notes"]
 
         # in my past experience, if you use all cpus, you lose results
         usable_cpu = multiprocessing.cpu_count() - 1
@@ -112,15 +112,18 @@ def write_results_to_file(rows: list, header: list):
 def print_formatted_results(rows: list, headers: list) -> None:
 
     print("\nScan Results: \n")
+    
     for row in rows:
+
         if len(row) > 0:
-            print("{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}".format(
+            print("{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}".format(
                 headers[0], row[0],
                 headers[1], row[1],
                 headers[2], row[2],
                 headers[3], row[3],
                 headers[4], row[4],
                 headers[5], row[5],
+                headers[6], row[6],
                 "\n"))
 
 
