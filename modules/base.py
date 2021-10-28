@@ -1,7 +1,6 @@
 import urllib
 from urllib.request import Request
-import json
-
+from http.client import HTTPResponse
 
 class ApiHandler():
     def __init__(self):
@@ -11,7 +10,7 @@ class ApiHandler():
                           url: str,
                           method: str,
                           body: dict = None,
-                          headers: dict = None):
+                          headers: dict = None) -> HTTPResponse:
 
         response = None
 
@@ -25,7 +24,6 @@ class ApiHandler():
             for k, v in headers:
                 req.add_header(k, headers[k])
 
-        # print("sending request to " + url)
-        response = json.load(urllib.request.urlopen(req))
-        # print(response)
+        response = urllib.request.urlopen(req)
+
         return response

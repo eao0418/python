@@ -1,4 +1,5 @@
 from modules.base import ApiHandler
+import json
 
 
 class GeolocationClient(ApiHandler):
@@ -38,4 +39,4 @@ class GeolocationClient(ApiHandler):
                                           method='GET',
                                           body=None,
                                           headers=None)
-        return response
+        return json.load(response)
