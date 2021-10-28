@@ -14,14 +14,21 @@ import ipaddress
 
 def main():
 
-    # Store sensitive information in a configuration file so that we don't accidentally commit it to github
+    """
+    Store sensitive information in a configuration file so that we don't 
+    accidentally commit it to github
+    """
     config = configparser.ConfigParser()
     config.read("conf.ini")
     key = config["Geolocation"]["key"]
 
     ip_help = "scans a single IP address"
-    scan_file_help = "provides a text file of IP addresses to scan. Cannot provide a file and a single IP"
-    write_to_file_help = "tells the script to write output to a file rather than the console. Valid values for true are y, t, yes, true. Everything else is considered false"
+    scan_file_help = "provides a text file of IP addresses to scan. "
+    scan_file_help += "Cannot provide a file and a single IP"
+    write_to_file_help = "tells the script to write output to a file "
+    write_to_file_help += "rather than the console. Valid values for true "
+    write_to_file_help += "are y, t, yes, true. Everything else is considered false"
+
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip",

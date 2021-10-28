@@ -11,8 +11,12 @@ from modules.utilities import HeaderChecker
 def main():
 
     url_help = "reports on one URL"
-    scan_file_help = "provides a text file of urls to scan. Cannot provide a file and a single url"
-    write_to_file_help = "tells the script to write output to a file rather than the console. Valid values for true are y, t, yes, true. Everything else is considered false"
+    scan_file_help = "provides a text file of urls to scan. "
+    scan_file_help += "Cannot provide a file and a single url"
+    write_to_file_help = "tells the script to write output to a file rather "
+    write_to_file_help = "than the console. Valid values for true are y, t, yes, "
+    write_to_file_help = "true. Everything else is considered false"
+    
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--url",
