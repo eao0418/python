@@ -74,19 +74,25 @@ class HeaderChecker(ApiHandler):
 
                 output.append(host)
                 output.append(ip_address)
+                headers_present = 0
 
                 if None != strict_transport_header and strict_transport_header:
                     output.append(strict_transport_header)
+                    headers_present += 1
                 elif is_insecure:
                     output.append("")
                 else:
                     output.append("MISSING")
+
                 if None != content_security_header and content_security_header:
                     output.append(content_security_header)
+                    headers_present += 1
                 else:
                     output.append("MISSING")
+                
                 if None != x_frame_header and x_frame_header:
                     output.append(x_frame_header)
+                    headers_present += 1
                 else:
                     output.append("MISSING")
 
@@ -94,6 +100,10 @@ class HeaderChecker(ApiHandler):
                     output.append("Non-secure protocol used, Strict-Transport-Security not evaluated")
                 else:
                     output.append("")
+
+                if headers_present == 3:
+                    output = []
+
             except Exception as e:
                 print("ERROR: caught an exception {}".format(e))
 

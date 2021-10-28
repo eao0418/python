@@ -20,7 +20,11 @@ Scans one or more IP addresses from a file
 ```
 
 # header_scanner
-A script that evaluates a provided url's security-related headers
+A script that evaluates the presence of the following headers:
+    * Strict-Transport-Security
+    * Content-Security-Policy
+    * X-Frame-Options
+If any of the listed headers are missing, a result will be generated. The result can be printed to the screen or exported to a CSV file.
 ### Prerequisites
 None, this uses the standard library and custom code is all included.
 ### How to run the script

@@ -113,14 +113,15 @@ def print_formatted_results(rows: list, headers: list) -> None:
 
     print("\nScan Results: \n")
     for row in rows:
-        print("{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}".format(
-            headers[0], row[0],
-            headers[1], row[1],
-            headers[2], row[2],
-            headers[3], row[3],
-            headers[4], row[4],
-            headers[5], row[5],
-            "\n"))
+        if len(row) > 0:
+            print("{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}: {}\n{}".format(
+                headers[0], row[0],
+                headers[1], row[1],
+                headers[2], row[2],
+                headers[3], row[3],
+                headers[4], row[4],
+                headers[5], row[5],
+                "\n"))
 
 
 def check_headers(url: str) -> list:
