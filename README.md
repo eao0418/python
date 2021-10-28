@@ -9,7 +9,7 @@ Runs the script against one address
 ```shell
     ./ip_scanner.py --ip 131.253.12.5
 ```
-#### Scan from a file
+#### Scan IPs from a file
 Scans one or more IP addresses from a file 
 ```shell
     ./ip_scanner.py --scan_file ./ips.txt
@@ -30,7 +30,7 @@ Runs the script against one address
 ```shell
     ./header_scanner.py --url www.redsiege.com
 ```
-#### Run from a file
+#### Evaluate URLs from a file
 Scans one or more IP addresses from a file 
 ```shell
     ./header_scanner.py --scan_file ./urls.txt
