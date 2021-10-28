@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ip_scanner
 A small script that allows the user to get information about an IP address from ipgeolocation.io
 
@@ -25,3 +26,6 @@ Scans one or more IP addresses from a file
 Aaron
 eao0418
 https://github.com/eao0418
+=======
+## WIP
+>>>>>>> f7428b68c8541a78fe1f848fe7e2e496674228d1

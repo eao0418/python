@@ -32,6 +32,11 @@ class HeaderChecker(ApiHandler):
         if None == method or not method:
             method = 'GET'
 
+        is_insecure = False
+
+        if (re.match(r"http://", url)):
+            is_insecure = True
+        
         response = None
         output = []
         host = re.sub("(?i).com[a-z0-9/\-_?=&.]+", ".com",
@@ -47,9 +52,11 @@ class HeaderChecker(ApiHandler):
             output.extend([host, "", "", "", "", "{}".format(e)])
 
         if None != response:
-            strict_transport_header = response.getheader(
-                "Strict-Transport-Security")
-            contet_security_header = response.getheader(
+
+            if not is_insecure:
+                strict_transport_header = response.getheader(
+                    "Strict-Transport-Security")
+            content_security_header = response.getheader(
                 "Content-Security-Policy")
             x_frame_header = response.getheader("X-Frame-Options")
 
@@ -68,8 +75,8 @@ class HeaderChecker(ApiHandler):
                     output.append(strict_transport_header)
                 else:
                     output.append("MISSING")
-                if None != contet_security_header and contet_security_header:
-                    output.append(contet_security_header)
+                if None != content_security_header and content_security_header:
+                    output.append(content_security_header)
                 else:
                     output.append("MISSING")
                 if None != x_frame_header and x_frame_header:
@@ -77,7 +84,10 @@ class HeaderChecker(ApiHandler):
                 else:
                     output.append("MISSING")
 
-                output.append("")
+                if is_insecure:
+                    output.append("Non-secure protocol used, Strict-Transport-Security")
+                else:
+                    output.append("")
             except Exception as e:
                 print("Error: caught an exception {}".format(e))
 
