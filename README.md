@@ -21,6 +21,7 @@ Scans one or more IP addresses from a file
 
 # header_scanner
 A script that evaluates the presence of the following headers:
+
     - Strict-Transport-Security
     - Content-Security-Policy
     - X-Frame-Options
