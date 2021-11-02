@@ -1,13 +1,16 @@
 import multiprocessing
-from modules.ipgeolocation import GeolocationClient
-from datetime import datetime
-from functools import partial
-from multiprocessing import Pool, Value, pool
-from contextlib import closing
 import configparser
 import argparse
 import csv
 import ipaddress
+
+from datetime import datetime
+from functools import partial
+from multiprocessing import Pool
+from contextlib import closing
+
+from modules.ipgeolocation import GeolocationClient
+from modules.utilities import Util
 
 # ip_scanner
 # author: Aaron
@@ -65,7 +68,7 @@ def main():
         if "/" in ip:
             try:
                 ip_objects = list(ipaddress.ip_network(ip))
-            except ValueError as ve:
+            except ValueError:
                 print("ERROR: the provided value is not valid CIDR notation: {}".format(ip))
             
             for object in ip_objects:
@@ -75,7 +78,7 @@ def main():
             ip_object = None
             try:
                 ip_object = ipaddress.ip_address(ip)
-            except ValueError as ve:
+            except ValueError:
                 print("ERROR: the provided value is not a valid IP address: {}".format(ip))
                 exit(1)
 
@@ -118,8 +121,13 @@ def main():
         results = scan_ips(k = key, ip_list = ips)
 
         if results != []:
+            
             if write_output:
-                write_results_to_file(results)
+                header = [
+                    "ip_address", "organization", "isp", "country",
+                    "state/province", "city"
+                ]
+                Util.write_results_to_file(results, header, "scan_result")
             else:
                 for result in results:
                     print(
@@ -172,26 +180,6 @@ def scan_single_ip(key: str, search_ip: str) -> list:
         ])
 
     return result
-
-
-def write_results_to_file(rows: list):
-
-    file_name = "{}_scan_result.csv".format(datetime.utcnow().timestamp())
-    with open(file_name, 'w', newline='') as f:
-        writer = csv.writer(f, quoting = csv.QUOTE_ALL)
-        if rows != None and rows != []:
-
-            header = [
-                "ip_address", "organization", "isp", "country",
-                "state/province", "city"
-            ]
-            writer.writerow(header)
-
-            for row in rows:
-                writer.writerow(row)
-
-    print("file exported with name {}".format(file_name))
-
 
 if __name__ == '__main__':
     main()

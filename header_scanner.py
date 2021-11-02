@@ -1,11 +1,10 @@
 #!/usr/bin/python
 import argparse
-import csv
 import multiprocessing
 from contextlib import closing
-from datetime import datetime
 # Custom modules
 from modules.utilities import HeaderChecker
+from modules.utilities import Util
 
 
 def main():
@@ -19,24 +18,27 @@ def main():
 
     # Parse arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--url",
+    parser.add_argument("-u", "--url",
                         help=url_help,
                         type=str,
                         default=None,
                         required=False)
-    parser.add_argument("--scan_file",
+    parser.add_argument("-f", "--scan_file",
                         help=scan_file_help,
                         type=str,
                         required=False,
                         default=None)
-    parser.add_argument("--write_to_file",
+    parser.add_argument("-wf", "--write_to_file",
                         dest='write_to_file',
                         default=False,
                         help=write_to_file_help)
+    parser.add_argument('--output_directory', '-oD', type=str,
+                        help='The directory to place results files.')
     args = parser.parse_args()
 
     url = args.url
     scan_file = args.scan_file
+    output_directory = args.output_directory
     write_output = False
     if args.write_to_file:
         arg_val = args.write_to_file
@@ -67,7 +69,7 @@ def main():
                        "Content-Security-Policy", "X-Frame-Options", "Server", "Notes"]
 
         # in my past experience, if you use all cpus, you lose results
-        usable_cpu = multiprocessing.cpu_count() - 1
+        usable_cpu = multiprocessing.cpu_count() - 2
 
         if len(urls) == 1:
             scan_result.append(check_headers(urls[0]))
@@ -86,27 +88,12 @@ def main():
     if len(scan_result) > 0:
 
         if write_output:
-            write_results_to_file(scan_result, file_header)
+            Util.write_results_to_file(scan_result, file_header, "header_results")
         else:
             print_formatted_results(scan_result, file_header)
     else:
         print("ERROR: No results were obtained from the assessment.")
         exit(1)
-
-
-def write_results_to_file(rows: list, header: list):
-
-    file_name = "{}_site_assessment.csv".format(datetime.utcnow().timestamp())
-    with open(file_name, 'w', newline='') as f:
-        writer = csv.writer(f, quoting=csv.QUOTE_ALL)
-        if rows != None and rows != []:
-
-            writer.writerow(header)
-
-            for row in rows:
-                writer.writerow(row)
-
-    print("file exported with name {}".format(file_name))
 
 
 def print_formatted_results(rows: list, headers: list) -> None:
@@ -125,7 +112,6 @@ def print_formatted_results(rows: list, headers: list) -> None:
                 headers[5], row[5],
                 headers[6], row[6],
                 "\n"))
-
 
 def check_headers(url: str) -> list:
 

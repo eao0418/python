@@ -1,8 +1,15 @@
-from modules.base import ApiHandler
 import json
+import logging
 
+from modules.base import ApiHandler
 
 class GeolocationClient(ApiHandler):
+    """A class to handle the API requests to ipgeolocation.io
+
+    Written by Aaron eao0418
+    """
+
+    _logger = logging.getLogger(__name__)
     _base_url = "https://api.ipgeolocation.io"
     _api_key = ""
 
@@ -25,6 +32,7 @@ class GeolocationClient(ApiHandler):
         
         Returns -- A formatted JSON object
         """
+        self._logger.debug("lookup_ip_address: entering method")
 
         if None == ip or not ip:
             raise Exception("ip is a required argument")
@@ -35,8 +43,19 @@ class GeolocationClient(ApiHandler):
                                              self._api_key, ip)
 
         response = None
-        response = self.make_http_request(url=url,
-                                          method='GET',
-                                          body=None,
-                                          headers=None)
-        return json.load(response)
+
+        try:
+            response = self.make_http_request(url=url,
+                                              method='GET',
+                                              body=None,
+                                              headers=None)
+        except Exception as ex:
+            self._logger.exception(
+                "lookup_ip_address: caught an exception while scanning {}".format(ip))
+
+        self._logger.debug("lookup_ip_address: exiting method")
+        
+        if None != response:
+            return json.load(response)
+        else:
+            return response
