@@ -45,6 +45,21 @@ Scans one or more IP addresses from a file
     ./header_scanner.py --scan_file ./urls.txt --write_to_file true
 ```
 
+# ssh_spray
+A script to test hosts for valid ssh credentials
+### Prerequisits 
+paramkio is required.
+### How to run the script
+The script can be run using a single host or a file of hosts, a single user name or a file of user names
+#### Test multiple hosts with users from a file with a list of passwords
+```shell
+    ./ssh_spray.py -hf ./hosts.txt -pf ./passwords.txt -uf ./users.txt -c 5 -t 10
+```
+#### Test one host with one user name with a list of passwords
+```shell
+    ./ssh_spray.py -th 192.168.0.25 -pf ./passwords.txt -u root -c 5 -t 10
+```
+
 ## *Author Name*
 Aaron
 eao0418
