@@ -127,3 +127,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# configuration files
+conf.ini
+
+# Files to do small code tests
+test.py
+
+# outputs
+*.csv
+*.txt
+output/*.json

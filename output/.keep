@@ -1,0 +1,3 @@
+this is here to ensure the directory is in the repository.  
+Things that would normally go here get ignored in the .gitignore file.
+Future work will have script outputs dump here by default.
